@@ -1,0 +1,28 @@
+{
+    "name": "ender-ts",
+    "version": "0.1.0",
+    "description": "A cli application to setup and manage a Minecraft-server",
+    "main": "dist/index.js",
+    "author": "z3orc",
+    "license": "MIT",
+    "bin": {
+        "ender": "dist/index.js"
+    },
+    "dependencies": {
+        "chalk": "^5.0.1",
+        "commander": "^9.4.0",
+        "conf": "^10.2.0",
+        "enquirer": "^2.3.6",
+        "ora": "5.4.1",
+        "pkg": "^5.8.0"
+    },
+    "devDependencies": {
+        "@types/node": "^18.6.3"
+    },
+    "pkg": {
+        "scripts": "dist/index.js"
+    },
+    "scripts": {
+        "dist": "pkg . -o build/ender-cli -t latest-win-x64,latest-linux-arm"
+    }
+}

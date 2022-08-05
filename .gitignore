@@ -1,0 +1,8 @@
+/bin
+/build
+/data
+/ender-ts-linux
+/ender-ts-macos
+/ender-ts-win.exe
+/node_modules
+/yarn.lock
