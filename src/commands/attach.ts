@@ -9,7 +9,7 @@ export async function attach() {
         terminal: false,
     });
 
-    const client = net.createConnection({ port: 9000 }, () => {
+    const client = net.createConnection({ port: 25585 }, () => {
         process.stdout.write("Connected to server.\n");
     });
 

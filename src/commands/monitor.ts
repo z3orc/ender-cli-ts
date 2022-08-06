@@ -56,7 +56,7 @@ export async function monitor() {
         ls.kill("SIGINT");
     });
 
-    server.listen(9000, () => {
+    server.listen(25585, () => {
         // console.log("opened server on %j", server.address());
     });
 }
