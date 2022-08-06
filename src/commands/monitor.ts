@@ -2,7 +2,7 @@ import { exec } from "child_process";
 import Conf from "conf";
 import net from "net";
 
-export async function watcher() {
+export async function monitor() {
     const config = new Conf({ projectName: "ender-ts" });
     const ram = await config.get("ram");
     const port = Number(await config.get("port"));
@@ -56,7 +56,7 @@ export async function watcher() {
         ls.kill("SIGINT");
     });
 
-    server.listen(9000, () => {
+    server.listen(25585, () => {
         // console.log("opened server on %j", server.address());
     });
 }

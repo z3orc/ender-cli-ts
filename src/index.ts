@@ -5,7 +5,6 @@ import { attach } from "./commands/attach.js";
 import { setup } from "./commands/setup.js";
 import { start_attached, start_detached } from "./commands/start.js";
 import { stop } from "./commands/stop.js";
-import { upgrade } from "./commands/upgrade.js";
 import { watcher } from "./lib/watcher.js";
 
 program.name("ender-cli").description("A cli application to setup and manage a Minecraft-server").version("0.1.0");
@@ -45,17 +44,10 @@ program
     });
 
 program
-    .command("upgrade")
-    .description("Upgrades the Minecraft-server to a newer version")
-    .action(() => {
-        upgrade();
-    });
-
-program
     .command("watcher")
     .description("Starts the watcher-process")
     .action(() => {
-        watcher();
+        monitor();
     });
 
 program.parse();

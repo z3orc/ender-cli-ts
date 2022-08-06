@@ -1,8 +1,11 @@
 /bin
 /build
 /data
+/dist
 /ender-ts-linux
 /ender-ts-macos
 /ender-ts-win.exe
 /node_modules
 /yarn.lock
+/yarn-error.log
+/.DS_Store
