@@ -5,13 +5,16 @@ import net from "net";
 export async function watcher() {
     const config = new Conf({ projectName: "ender-ts" });
     const ram = await config.get("ram");
+    const port = Number(await config.get("port"));
+    const launch_params = `java -Xmx${ram} -Xms${ram}  -jar ../bin/server.jar --nogui`;
+
     var ls = exec("java -jar ../bin/server.jar nogui", { cwd: "./data" });
     var log = [];
 
     var server = net.createServer();
     server.on("connection", (socket) => {
-        log.forEach((element) => {
-            socket.write(element);
+        log.forEach((data) => {
+            socket.write(data);
         });
 
         socket.on("data", (data) => {

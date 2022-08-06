@@ -20,12 +20,14 @@ function watcher() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = new conf_1.default({ projectName: "ender-ts" });
         const ram = yield config.get("ram");
+        const port = Number(yield config.get("port"));
+        const launch_params = `java -Xmx${ram} -Xms${ram}  -jar ../bin/server.jar --nogui`;
         var ls = (0, child_process_1.exec)("java -jar ../bin/server.jar nogui", { cwd: "./data" });
         var log = [];
         var server = net_1.default.createServer();
         server.on("connection", (socket) => {
-            log.forEach((element) => {
-                socket.write(element);
+            log.forEach((data) => {
+                socket.write(data);
             });
             socket.on("data", (data) => {
                 ls.stdin.write(data.toString() + "\n");
