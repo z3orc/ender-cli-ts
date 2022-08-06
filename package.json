@@ -1,6 +1,6 @@
 {
     "name": "ender-ts",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A cli application to setup and manage a Minecraft-server",
     "main": "dist/index.js",
     "author": "z3orc",
