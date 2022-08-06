@@ -66,6 +66,11 @@ export async function setup() {
             name: "whitelist",
             message: "Should the server be whitelisted?",
         },
+        {
+            type: "confirm",
+            name: "eula",
+            message: "I have read and agree to the Minecraft EULA (https://www.minecraft.net/eula)",
+        },
     ];
 
     let answers = await prompt(question);
@@ -80,8 +85,39 @@ export async function setup() {
         fs.mkdirSync("./bin");
     }
 
+    var properties = fs.createWriteStream("./data/server.properties", {
+        flags: "a", // 'a' means appending (old data will be preserved)
+    });
+
     const version = await config.get("version");
     const flavour = await config.get("flavour");
+    const player_limit = await config.get("player_limit");
+    const world_seed = await config.get("world_seed");
+    const gamemode = await config.get("gamemode");
+    const difficulty = await config.get("difficulty");
+    const port = await config.get("port");
+    const whitelist = await config.get("whitelist");
+    const eula = await config.get("eula");
+
+    properties.write(`max-players=${player_limit}\n`);
+    properties.write(`level-seed=${world_seed}\n`);
+    properties.write(`gamemode=${gamemode}\n`);
+    properties.write(`difficulty=${difficulty}\n`);
+    properties.write(`server-port=${port}\n`);
+    properties.write(`white-list=${whitelist}\n`);
+
+    properties.end();
+
+    if (eula) {
+        fs.writeFile("./data/eula.txt", "eula=true", (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+    } else {
+        console.log("You must agree to the Minecraft EULA (https://www.minecraft.net/eula)");
+        process.exit();
+    }
 
     await download("https://dynamic.z3orc.com/" + flavour + "/" + version, "./bin/server.jar");
 }

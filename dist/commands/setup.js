@@ -77,6 +77,11 @@ function setup() {
                 name: "whitelist",
                 message: "Should the server be whitelisted?",
             },
+            {
+                type: "confirm",
+                name: "eula",
+                message: "I have read and agree to the Minecraft EULA (https://www.minecraft.net/eula)",
+            },
         ];
         let answers = yield prompt(question);
         config.set(answers);
@@ -86,8 +91,36 @@ function setup() {
         if (!fs_1.default.existsSync("./bin")) {
             fs_1.default.mkdirSync("./bin");
         }
+        var properties = fs_1.default.createWriteStream("./data/server.properties", {
+            flags: "a", // 'a' means appending (old data will be preserved)
+        });
         const version = yield config.get("version");
         const flavour = yield config.get("flavour");
+        const player_limit = yield config.get("player_limit");
+        const world_seed = yield config.get("world_seed");
+        const gamemode = yield config.get("gamemode");
+        const difficulty = yield config.get("difficulty");
+        const port = yield config.get("port");
+        const whitelist = yield config.get("whitelist");
+        const eula = yield config.get("eula");
+        properties.write(`max-players=${player_limit}\n`);
+        properties.write(`level-seed=${world_seed}\n`);
+        properties.write(`gamemode=${gamemode}\n`);
+        properties.write(`difficulty=${difficulty}\n`);
+        properties.write(`server-port=${port}\n`);
+        properties.write(`white-list=${whitelist}\n`);
+        properties.end();
+        if (eula) {
+            fs_1.default.writeFile("./data/eula.txt", "eula=true", (err) => {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        }
+        else {
+            console.log("You must agree to the Minecraft EULA (https://www.minecraft.net/eula)");
+            process.exit();
+        }
         yield (0, download_js_1.download)("https://dynamic.z3orc.com/" + flavour + "/" + version, "./bin/server.jar");
     });
 }
