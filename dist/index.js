@@ -19,7 +19,6 @@ commander_1.program
     .description("Starts the Minecraft-server")
     .option("-a, --attached", "Starts the server attached to the console")
     .action(() => {
-    console.log(commander_1.program.args[1]);
     if (commander_1.program.args[1] == "--attached" || commander_1.program.args[1] == "-a") {
         (0, start_js_1.start_attached)();
     }

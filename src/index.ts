@@ -21,8 +21,6 @@ program
     .description("Starts the Minecraft-server")
     .option("-a, --attached", "Starts the server attached to the console")
     .action(() => {
-        console.log(program.args[1]);
-
         if (program.args[1] == "--attached" || program.args[1] == "-a") {
             start_attached();
         } else {
