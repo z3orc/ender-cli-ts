@@ -45,3 +45,18 @@ function attach() {
     });
 }
 exports.attach = attach;
+// function write_to_log(data: String) {
+//     if (data.includes("INFO")) {
+//         let time = chalk.blueBright(data.substring(0, 10));
+//         let worker = data.substring(11, 31);
+//         let message = data.substring(33);
+//         if (worker.includes("INFO")) {
+//             worker = chalk.green(worker);
+//         } else {
+//             worker = chalk.red(worker);
+//         }
+//         process.stdout.write(`${time} ${worker} ${message}\n`);
+//     } else {
+//         process.stdout.write(data.toString());
+//     }
+// }
