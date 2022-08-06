@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.start_detached = exports.start_attached = void 0;
 const ora_1 = __importDefault(require("ora"));
 const child_process_1 = require("child_process");
-// import chalk from "chalk";
-// import Conf from "conf";
 const attach_js_1 = require("./attach.js");
+const tcp_port_used_1 = __importDefault(require("tcp-port-used"));
+const conf_1 = __importDefault(require("conf"));
 function start_attached() {
     return __awaiter(this, void 0, void 0, function* () {
         const server = (0, child_process_1.spawn)("node", ["../lib/watcher.js"], { detached: true, shell: false, windowsHide: true });
@@ -30,19 +30,31 @@ exports.start_attached = start_attached;
 function start_detached() {
     return __awaiter(this, void 0, void 0, function* () {
         const program = String(process.argv[0]);
-        console.log(process.execPath);
-        const server = (0, child_process_1.spawn)(program, [process.argv[1], "watcher"], { detached: true, shell: false });
+        const watcher = (0, child_process_1.spawn)(program, [process.argv[1], "watcher"], { detached: true, shell: true });
         const spinner = (0, ora_1.default)("Starting server").start();
-        setTimeout(() => {
-            if (server.exitCode == null) {
-                spinner.succeed("Server running");
+        const config = new conf_1.default({});
+        const port = Number(yield config.get("port"));
+        tcp_port_used_1.default.check(port).then((inUse) => {
+            if (inUse) {
+                spinner.fail("Port is already in use");
+                process.exit();
             }
-            else {
-                spinner.fail("Could not boot server");
-            }
+        });
+        watcher.on("exit", (e) => {
+            spinner.fail("Could not boot server");
             process.exit();
-        }, 10000);
-        console.log("hello");
+        });
+        watcher.on("error", (e) => {
+            spinner.fail("Could not boot server");
+            process.exit();
+        });
+        tcp_port_used_1.default.waitUntilUsed(port, 500, 60000).then(() => {
+            spinner.succeed("Server started");
+            process.exit();
+        }, (err) => {
+            spinner.fail("Server timeout");
+            process.exit();
+        });
     });
 }
 exports.start_detached = start_detached;

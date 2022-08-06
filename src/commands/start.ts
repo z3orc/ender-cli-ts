@@ -1,10 +1,8 @@
 import ora from "ora";
 import { spawn } from "child_process";
-import { Worker } from "worker_threads";
-import { dirname } from "path";
-// import chalk from "chalk";
-// import Conf from "conf";
 import { attach } from "./attach.js";
+import tcp from "tcp-port-used";
+import Conf from "conf";
 
 export async function start_attached() {
     const server = spawn("node", ["../lib/watcher.js"], { detached: true, shell: false, windowsHide: true });
@@ -16,18 +14,37 @@ export async function start_attached() {
 
 export async function start_detached() {
     const program = String(process.argv[0]);
-    console.log(process.execPath);
-    const server = spawn(program, [process.argv[1], "watcher"], { detached: true, shell: false });
-
+    const watcher = spawn(program, [process.argv[1], "watcher"], { detached: true, shell: true });
     const spinner = ora("Starting server").start();
 
-    setTimeout(() => {
-        if (server.exitCode == null) {
-            spinner.succeed("Server running");
-        } else {
-            spinner.fail("Could not boot server");
+    const config = new Conf({});
+    const port = Number(await config.get("port"));
+
+    tcp.check(port).then((inUse) => {
+        if (inUse) {
+            spinner.fail("Port is already in use");
+            process.exit();
         }
+    });
+
+    watcher.on("exit", (e) => {
+        spinner.fail("Could not boot server");
         process.exit();
-    }, 10000);
-    console.log("hello");
+    });
+
+    watcher.on("error", (e) => {
+        spinner.fail("Could not boot server");
+        process.exit();
+    });
+
+    tcp.waitUntilUsed(port, 500, 60000).then(
+        () => {
+            spinner.succeed("Server started");
+            process.exit();
+        },
+        (err) => {
+            spinner.fail("Server timeout");
+            process.exit();
+        }
+    );
 }
