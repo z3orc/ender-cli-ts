@@ -10,9 +10,8 @@ const config = new Conf();
 let spinner;
 
 export async function setup() {
-    console.log("setup");
 
-    const question = [
+    const questions = [
         {
             type: "input",
             name: "version",
@@ -73,7 +72,7 @@ export async function setup() {
         },
     ];
 
-    let answers = await prompt(question);
+    let answers = await prompt(questions);
 
     config.set(answers);
 
