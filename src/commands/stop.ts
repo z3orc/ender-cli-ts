@@ -1,7 +1,7 @@
 import net from "net";
 import ora from "ora";
 
-export function stop() {
+export async function stop() {
     const spinner = ora("Stopping server").start();
 
     const client = net.createConnection({ port: 9000 }, () => {
@@ -12,4 +12,14 @@ export function stop() {
         spinner.succeed("Server stopped");
         process.exit();
     });
+
+    client.on("exit", () => {
+        spinner.succeed("Server stopped");
+        process.exit();
+    });
+
+    setTimeout(() => {
+        spinner.fail("Could not stop server");
+        process.exit();
+    }, 15000);
 }
