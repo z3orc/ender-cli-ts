@@ -4,7 +4,7 @@ import ora from "ora";
 export async function stop() {
     const spinner = ora("Stopping server").start();
 
-    const client = net.createConnection({ port: 9000 }, () => {
+    const client = net.createConnection({ port: 25585 }, () => {
         client.write(`stop\n`);
     });
 
