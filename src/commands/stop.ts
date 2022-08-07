@@ -27,5 +27,5 @@ export async function stop() {
     setTimeout(() => {
         spinner.fail("Could not stop server");
         process.exit();
-    }, 15000);
+    }, 60000);
 }
