@@ -1,6 +1,7 @@
 import Conf from "conf";
 import pkg from "enquirer";
 import { download } from "../lib/download.js";
+import { backup } from "./backup.js";
 
 const { prompt } = pkg;
 
@@ -31,6 +32,8 @@ export async function upgrade() {
     let answers = await prompt(questions);
 
     const new_version = answers["new_version"];
+
+    backup();
 
     await download(`https://dynamic.z3orc.com/${flavour}/${new_version}`, "./bin/server.jar");
 }
