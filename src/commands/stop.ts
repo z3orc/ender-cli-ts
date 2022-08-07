@@ -6,8 +6,6 @@ export async function stop() {
     const spinner = ora("Stopping server").start();
 
     const client = net.createConnection({ port: 25585 }, () => {
-        client.write(`stop\n`);
-
         client.on("error", () => {
             spinner.succeed("Server stopped");
             process.exit();
@@ -22,6 +20,8 @@ export async function stop() {
             spinner.succeed("Server stopped");
             process.exit();
         });
+
+        client.write(`stop\n`);
     });
 
     // setTimeout(() => {
