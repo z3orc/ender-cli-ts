@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { program } from "commander";
 import { attach } from "./commands/attach.js";
 import { setup } from "./commands/setup.js";
@@ -7,6 +5,7 @@ import { start_attached, start_detached } from "./commands/start.js";
 import { stop } from "./commands/stop.js";
 import { monitor } from "./commands/monitor.js";
 import { upgrade } from "./commands/upgrade.js";
+import { backup} from "./commands/backup.js";
 
 program.name("ender-cli").description("A cli application to setup and manage a Minecraft-server").version("0.1.0");
 
@@ -42,6 +41,13 @@ program
     .description("Attaches to the server")
     .action(() => {
         attach();
+    });
+
+program
+    .command("backup")
+    .description("Backups the server to a zip-file")
+    .action(() => {
+        backup();
     });
 
 program
