@@ -88,7 +88,7 @@ async function get_possible_versions(version: String, flavour: String, snapshots
 
         versions.length = index;
 
-        versions.forEach((element) => {
+        versions.forEach((element: String) => {
             possible_versions.push(element);
         });
     }
