@@ -26,8 +26,8 @@ export async function setup() {
         {
             type: "input",
             name: "ram",
-            message: "How much ram should the server use (in MB)",
-            initial: "2000MB",
+            message: "How much ram should the server use (in Mb, do not include the unit)",
+            initial: "2000",
         },
         {
             type: "input",
