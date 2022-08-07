@@ -1,31 +1,37 @@
+import Conf from "conf";
 import net from "net";
 import ora from "ora";
 import tcp from "tcp-port-used";
 
 export async function stop() {
-    const spinner = ora("Stopping server").start();
+    const config = new Conf({});
+    const port = Number(await config.get("port"));
+    const spinner = ora("Stopping server");
 
     const client = net.createConnection({ port: 25585 }, () => {
-        client.on("error", () => {
-            spinner.succeed("Server stopped");
-            process.exit();
-        });
-
-        client.on("exit", () => {
-            spinner.succeed("Server stopped");
-            process.exit();
-        });
-
-        client.on("close", () => {
-            spinner.succeed("Server stopped");
-            process.exit();
-        });
-
-        client.write(`stop\n`);
+        spinner.start();
     });
 
-    // setTimeout(() => {
-    //     spinner.fail("Could not stop server");
-    //     process.exit();
-    // }, 60000);
+    client.on("data", (data) => {});
+
+    client.on("close", () => {
+        tcp.check(port).then((res) => {
+            if (!res) {
+                spinner.succeed("Server stopped");
+                process.exit();
+            } else {
+                spinner.fail("Server did not stop successfully");
+                process.exit();
+            }
+        });
+    });
+
+    client.on("error", () => {
+        console.log("Could not stop the server, is it running?");
+        process.exit();
+    });
+
+    setTimeout(() => {
+        client.write("stop\n");
+    }, 2000);
 }
