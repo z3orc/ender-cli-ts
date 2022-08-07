@@ -4,7 +4,7 @@ import ora from "ora";
 import tcp from "tcp-port-used";
 
 export async function stop() {
-    const config = new Conf({});
+    const config = new Conf({ cwd: "./config/ender.json" });
     const port = Number(await config.get("port"));
     const spinner = ora("Stopping server");
 
@@ -27,7 +27,7 @@ export async function stop() {
     });
 
     client.on("error", () => {
-        console.log("Could not stop the server, is it running?");
+        console.log("Server stopped");
         process.exit();
     });
 

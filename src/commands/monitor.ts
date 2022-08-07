@@ -3,12 +3,12 @@ import Conf from "conf";
 import net from "net";
 
 export async function monitor() {
-    const config = new Conf({ projectName: "ender-ts" });
+    const config = new Conf({ projectName: "ender-ts", cwd: "./config/ender.json" });
     const ram = await config.get("ram");
     const port = Number(await config.get("port"));
-    const launch_params = `java -Xmx${ram} -Xms${ram}  -jar ../bin/server.jar --nogui`;
+    const launch_params = `java -Xmx${ram} -Xms${ram}  -jar ../bin/server.jar nogui`;
 
-    var ls = exec("java -jar ../bin/server.jar nogui", { cwd: "./data" });
+    var ls = exec(launch_params, { cwd: "./data" });
     var log = [];
 
     var server = net.createServer();

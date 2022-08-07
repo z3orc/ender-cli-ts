@@ -6,12 +6,12 @@ import tcp from "tcp-port-used";
 import Conf from "conf";
 
 export async function start_attached() {
-    const config = new Conf({ projectName: "ender-ts" });
+    const config = new Conf({ projectName: "ender-ts", cwd: "./config/ender.json" });
     const ram = await config.get("ram");
     const port = Number(await config.get("port"));
     const launch_params = `java -Xmx${ram} -Xms${ram}  -jar ../bin/server.jar --nogui`;
 
-    var ls = spawn("java", ["-jar", "../bin/server.jar", "--nogui"], { cwd: "./data", stdio: ["pipe", "pipe", "pipe", "pipe"] });
+    var ls = spawn("java", ["-jar", `-Xmx${ram}`, `-Xms${ram}`, "../bin/server.jar", "--nogui"], { cwd: "./data", stdio: ["pipe", "pipe", "pipe", "pipe"] });
     var log = [];
 }
 

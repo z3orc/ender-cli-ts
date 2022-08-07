@@ -5,12 +5,11 @@ import { download } from "../lib/download.js";
 
 const { prompt } = pkg;
 
-const config = new Conf();
+const config = new Conf({ cwd: "./config/ender.json" });
 
 let spinner;
 
 export async function setup() {
-
     const questions = [
         {
             type: "input",

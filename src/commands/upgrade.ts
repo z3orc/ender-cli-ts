@@ -6,7 +6,7 @@ import { backup } from "./backup.js";
 const { prompt } = pkg;
 
 export async function upgrade() {
-    const config = new Conf();
+    const config = new Conf({ cwd: "./config/ender.json" });
     const version = String(await config.get("version")).toLowerCase();
     const flavour = String(await config.get("flavour")).toLowerCase();
 
