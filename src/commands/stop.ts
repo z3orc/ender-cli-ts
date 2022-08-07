@@ -1,5 +1,6 @@
 import net from "net";
 import ora from "ora";
+import tcp from "tcp-port-used";
 
 export async function stop() {
     const spinner = ora("Stopping server").start();
@@ -14,6 +15,11 @@ export async function stop() {
     });
 
     client.on("exit", () => {
+        spinner.succeed("Server stopped");
+        process.exit();
+    });
+
+    client.on("close", () => {
         spinner.succeed("Server stopped");
         process.exit();
     });
