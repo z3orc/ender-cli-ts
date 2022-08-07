@@ -36,6 +36,7 @@ export async function monitor() {
         ls.on("close", (code) => {
             process.stdout.write(`child process exited with code ${code}`);
             socket.emit("close");
+            socket.end();
             process.exit();
         });
     });
