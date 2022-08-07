@@ -1,9 +1,9 @@
 import fs from "fs";
 import archiver from "archiver";
-import unzipper from "unzipper";
-import rimraf from "rimraf";
+// import unzipper from "unzipper";
+// import rimraf from "rimraf";
 import ora from "ora";
-import path from "path";
+// import path from "path";
 
 export function backup() {
     const date = Date.now();
